@@ -1,0 +1,91 @@
+
+
+import tensorflow as tf
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+from tensorflow.keras.applications.vgg16 import preprocess_input
+
+from tensorflow.keras.utils import to_categorical
+
+from sklearn.model_selection import train_test_split
+
+import os
+
+ 
+
+ 
+
+image_dir = 'C:/Users/s554991/Downloads/Malaria Cells'  
+
+image_size = (224, 224) 
+
+batch_size = 32
+
+ 
+
+ 
+
+datagen = ImageDataGenerator(
+
+    rescale=1.0 / 255.0,       
+
+    rotation_range=20,          
+
+    width_shift_range=0.2,      
+
+    height_shift_range=0.2,    
+
+    horizontal_flip=True,      
+
+    fill_mode='nearest'         
+
+)
+
+ 
+
+image_data = datagen.flow_from_directory(
+
+    image_dir,
+
+    target_size=image_size,
+
+    batch_size=batch_size,
+
+    class_mode='binary'  
+
+)
+
+ 
+
+ 
+
+train_data, val_data = train_test_split(image_data, test_size=0.2, random_state=42)
+
+ 
+
+ 
+
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+ 
+
+ 
+
+history = model.fit(
+
+    train_data,
+
+    epochs=10,  
+
+    validation_data=val_data,
+
+)
+
+ 
+
+ 
+
+test_loss, test_accuracy = model.evaluate(val_data)
+
+print(f'Test accuracy: {test_accuracy}')
