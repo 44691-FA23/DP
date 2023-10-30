@@ -4,6 +4,7 @@ Prediction of Chronic diseases using Machine learning algorithms like Logistic r
 WE WILL WORK ON THIS DISEASE:-
 ![Chronic Disease](image.png)
 Steps involved in Disease prediction :- 
+
 The "Disease Prediction Using Machine Learning" project involves several key steps to achieve its main goal of developing and testing computer models for disease prediction using medical information. Here are the steps involved in the project:
 Data Collection: Gather relevant medical data from various sources. This data may include patient test results, personal information, medical history, and any other relevant information.
 Data Cleaning and Preprocessing: Prepare the collected data by cleaning it to remove any inconsistencies, missing values, or errors. Ensure that the data is in a suitable format for analysis.
