@@ -1,0 +1,38 @@
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+
+# Load your dataset (replace 'your_data.csv' with the appropriate path)
+data = pd.read_csv('../Dataset/My_data.csv')
+
+# Data preprocessing
+# Assuming that 'target' is the column representing the presence or absence of the disease
+X = data.drop(columns=['target'])
+y = data['target']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Feature scaling (if necessary)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Model training
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+
+
+#  code is responsible for preparing the machine learning model for disease prediction. Here's what it does:
+
+# Imports Necessary Libraries: This code section begins by importing the required Python libraries for data manipulation and machine learning.
+
+# Loads the Dataset: It loads the medical dataset (your_data.csv) that contains patient information, including symptoms and the target variable indicating the presence or absence of the disease.
+
+# Data Preprocessing: Person 1 preprocesses the data, splitting it into features (X) and the target variable (y), and then splitting it into training and testing sets. If needed, the features are scaled using standardization to ensure that they have similar scales.
+
+# Model Training: The code initializes a Random Forest Classifier and trains it using the training data (X_train and y_train).
+
