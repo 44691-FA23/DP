@@ -1,54 +1,98 @@
-# Import necessary libraries
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.inspection import permutation_importance
+import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
+from tensorflow.keras.applications.inception_v3 import decode_predictions
 
-# Load your dataset
-# For demonstration purposes, let's assume a dataset with features (X) and labels (y)
-# Replace this with your actual dataset
-data = pd.read_csv("your_dataset.csv")
-X = data.drop('target_column', axis=1)
-y = data['target_column']
+# Load a pre-trained InceptionV3 model
+model = InceptionV3(weights='imagenet')
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Function to preprocess the image and generate predictions
+def predict_image(C:\Users\s554991\Downloads\Malaria Cells\single_prediction):
+    img = image.load_img(C:\Users\s554991\Downloads\Malaria Cells\single_prediction, target_size=(299, 299))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array = preprocess_input(img_array)
+    
+    predictions = model.predict(img_array)
+    decoded_predictions = decode_predictions(predictions, top=3)[0]
+    
+    return decoded_predictions
 
-# Train a random forest classifier (you can replace this with your chosen model)
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+# Function to generate Grad-CAM heatmap
+def generate_grad_cam(model, C:\Users\s554991\Downloads\Malaria Cells\single_prediction, class_index, layer_name='conv2d_94'):
+    img = image.load_img(img_path, target_size=(299, 299))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array = preprocess_input(img_array)
 
-# Evaluate the model
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
+    grad_model = tf.keras.models.Model([model.inputs], [model.get_layer(layer_name).output, model.output])
 
-# Calculate and plot feature importances
-feature_importance = model.feature_importances_
-feature_names = X.columns
+    with tf.GradientTape() as tape:
+        conv_output, predictions = grad_model(img_array)
+        class_output = predictions[:, class_index]
 
-# Create a DataFrame to display feature importances
-feature_importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importance})
-feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
+    grads = tape.gradient(class_output, conv_output)
+    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
 
-# Plot the feature importances
-plt.figure(figsize=(10, 6))
-plt.barh(feature_importance_df['Feature'], feature_importance_df['Importance'])
-plt.xlabel('Importance')
-plt.ylabel('Feature')
-plt.title('Feature Importances')
-plt.show()
+    conv_output = conv_output.numpy()[0]
+    pooled_grads = pooled_grads.numpy()
+    
+    for i in range(pooled_grads.shape[-1]):
+        conv_output[:, :, i] *= pooled_grads[i]
 
-# Calculate permutation importance for interpretability
-perm_importance = permutation_importance(model, X_test, y_test, n_repeats=30, random_state=42)
+    heatmap = np.mean(conv_output, axis=-1)
+    heatmap = np.maximum(heatmap, 0)
+    heatmap /= np.max(heatmap)
 
-# Plot the permutation importances
-sorted_idx = perm_importance.importances_mean.argsort()[::-1]
-plt.figure(figsize=(10, 6))
-plt.barh(X.columns[sorted_idx], perm_importance.importances_mean[sorted_idx])
-plt.xlabel('Permutation Importance')
-plt.ylabel('Feature')
-plt.title('Permutation Importances')
+    return heatmap
+
+# Function to overlay heatmap on the original image
+def overlay_heatmap(C:\Users\s554991\Downloads\Malaria Cells\single_prediction, heatmap):
+    img = image.load_img(C:\Users\s554991\Downloads\Malaria Cells\single_prediction)
+    img = image.img_to_array(img)
+
+    heatmap = tf.image.resize(heatmap, (img.shape[1], img.shape[0]))
+    heatmap = np.uint8(255 * heatmap)
+
+    jet = plt.cm.get_cmap("jet")
+
+    heatmap = jet(heatmap)
+    heatmap = tf.keras.preprocessing.image.array_to_img(heatmap)
+    heatmap = heatmap.resize((img.shape[1], img.shape[0]))
+
+    superimposed_img = heatmap * 0.4 + img
+    superimposed_img = tf.keras.preprocessing.image.array_to_img(superimposed_img)
+
+    return superimposed_img
+
+# Example usage
+image_path = 'C:\Users\s554991\Downloads\Malaria Cells\single_prediction.jpg'
+decoded_predictions = predict_image(C:\Users\s554991\Downloads\Malaria Cells\single_prediction)
+print("Predictions:", decoded_predictions)
+
+# Get the index of the predicted class
+predicted_class_index = decoded_predictions[0][0][0]
+
+# Generate Grad-CAM heatmap
+heatmap = generate_grad_cam(model, C:\Users\s554991\Downloads\Malaria Cells\single_prediction, predicted_class_index)
+
+# Overlay heatmap on the original image
+result = overlay_heatmap(C:\Users\s554991\Downloads\Malaria Cells\single_prediction, heatmap)
+
+# Display the original image, heatmap, and the result
+plt.figure(figsize=(12, 6))
+plt.subplot(131)
+plt.imshow(image.load_img(image_path))
+plt.title('Original Image')
+
+plt.subplot(132)
+plt.imshow(heatmap, cmap='jet')
+plt.title('Grad-CAM Heatmap')
+
+plt.subplot(133)
+plt.imshow(result)
+plt.title('Overlayed Result')
+
 plt.show()
