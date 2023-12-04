@@ -1,0 +1,52 @@
+# Import necessary libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Step 1: Data Collection
+# Assume you have a CSV file named 'medical_data.csv' with relevant columns including symptoms and labels
+
+# Load the dataset
+df = pd.read_csv('medical_data.csv')
+
+# Step 2: Data Cleaning and Preprocessing
+# Assuming you've already handled missing values, outliers, and formatted the data appropriately
+
+# Step 3: Feature Selection
+# Assuming you've identified relevant features, and you have 'X' as features and 'y' as labels
+X = df[['feature1', 'feature2', 'feature3']]  # Update with actual feature names
+y = df['label']  # Update with actual label column name
+
+# Step 4: Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 5: Feature Scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Step 6: Model Training - Logistic Regression
+logreg_model = LogisticRegression()
+logreg_model.fit(X_train_scaled, y_train)
+
+# Step 6: Model Training - Support Vector Machine (SVM)
+svm_model = SVC()
+svm_model.fit(X_train_scaled, y_train)
+
+# Step 7: Model Evaluation
+# Logistic Regression
+y_pred_logreg = logreg_model.predict(X_test_scaled)
+print("Logistic Regression Model:")
+print("Accuracy:", accuracy_score(y_test, y_pred_logreg))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_logreg))
+print("Classification Report:\n", classification_report(y_test, y_pred_logreg))
+
+# Support Vector Machine (SVM)
+y_pred_svm = svm_model.predict(X_test_scaled)
+print("\nSupport Vector Machine (SVM) Model:")
+print("Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_svm))
+print("Classification Report:\n", classification_report(y_test, y_pred_svm))
