@@ -1,0 +1,20 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+folder_path = 'C:\Users\s554991\Downloads\archive (11)'
+for filename in os.listdir(C:\Users\s554991\Downloads\archive (11)):
+    if filename.endswith(('.jpg', '.png', '.jpeg')):
+        image_path = os.path.join(C:\Users\s554991\Downloads\archive (11), archive (11))
+        image = Image.open(C:\Users\s554991\Downloads\archive (11)\malaria cells)
+        new_size = (100, 100)
+        resized_image = image.resize(new_size)
+        image_array = np.array(resized_image)
+        normalized_image = image_array / 255.0
+if image is None:
+    print("Error: Unable to load image.")
+else:
+   save_path = os.path.join('preprocessed_images', archive (11))
+    normalized_image = (normalized_image * 255).astype(np.uint8)
+        new_image = Image.fromarray(normalized_image)
+        new_image.save(C:\Users\s554991\Downloads\Preprocessed Image data)
