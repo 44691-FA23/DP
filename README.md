@@ -1,4 +1,7 @@
+**Our team's final project documentation is in "[final_submission](https://github.com/44691-FA23/DP/tree/main/final_submission)" folder. Please go through it.**
+
 Disease Prediction using machine learning
+
 Prediction of Chronic diseases using Machine learning algorithms like Logistic regression and SVM where patient's symptoms are used as the Input Image data.
 
 WE WILL WORK ON THIS DISEASE:-
@@ -52,3 +55,4 @@ Share the results and findings with the medical community, policymakers, and rel
 Future Research:- 
 Identify areas for future research and improvement, such as exploring new data sources, refining algorithms, and enhancing model interpretability.
 By following these steps, the project aims to develop robust and accurate disease prediction models that can positively impact healthcare by improving early diagnosis and patient care.
+
