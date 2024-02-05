@@ -1,0 +1,37 @@
+import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class ProfileActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_profile)
+
+        val profileImage: ImageView = findViewById(R.id.profile_image)
+        val usernameTextView: TextView = findViewById(R.id.username_textview)
+        val emailTextView: TextView = findViewById(R.id.email_textview)
+        val editProfileButton: Button = findViewById(R.id.edit_profile_button)
+
+        // Load user data from somewhere (e.g., SharedPreferences or a ViewModel)
+        val username = "John Doe"
+        val email = "john.doe@example.com"
+        val profileImageUrl = "https://example.com/profile_image.jpg" // Replace with the actual URL
+
+        // Set user data to views
+        usernameTextView.text = username
+        emailTextView.text = email
+        // You can use a library like Picasso or Glide to load images efficiently
+        // For simplicity, let's assume it's a local resource in this example
+        profileImage.setImageResource(R.drawable.default_profile_image)
+
+        // Handle edit profile button click
+        editProfileButton.setOnClickListener {
+            // Open the edit profile activity or fragment
+            // For example:
+            // val intent = Intent(this, EditProfileActivity::class.java)
+            // startActivity(intent)
+        }
+    }
+}
