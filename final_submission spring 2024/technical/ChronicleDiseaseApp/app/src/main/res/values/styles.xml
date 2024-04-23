@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="circle1">
+        <item name="cornerSizeBottomLeft">20sp</item>
+        <item name="cornerSizeBottomRight">20sp</item>
+        <item name="cornerSizeTopLeft">20sp</item>
+        <item name="cornerSizeTopRight">20sp</item>
+    </style>
+
+    <style name="circle2">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">40sp</item>
+        <item name="cornerSizeTopLeft">40sp</item>
+        <item name="cornerSizeBottomRight">40sp</item>
+        <item name="cornerSizeBottomLeft">40sp</item>
+    </style>
+
+    <style name="circle3">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">15sp</item>
+        <item name="cornerSizeTopRight">15sp</item>
+    </style>
+</resources>
