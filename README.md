@@ -1,4 +1,4 @@
-**Our team's final project documentation is in "[final_submission](https://github.com/44691-FA23/DP/tree/main/final_submission)" folder. Please go through it.**
+**Our team's final project documentation is in "[final_submission spring 2024](https://github.com/44691-FA23/DP/tree/main/final_submission spring 2024)" folder. Please go through it.**
 
 Disease Prediction using machine learning
 
